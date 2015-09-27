@@ -1,0 +1,23 @@
+{
+  "name": "url-shortener",
+  "version": "0.0.1",
+  "description": "A simple URL Shortener running on Heroku",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "express": "4.13.3",
+    "grunt": "^0.4.5",
+    "load-grunt-tasks": "^3.3.0"
+  },
+  "engines": {
+    "node": "4.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jyonker/url-shortener"
+  },
+  "license": "Apache-2.0"
+}

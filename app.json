@@ -1,0 +1,5 @@
+{
+  "name": "URL Shortener",
+  "description": "A simple URL Shortener running on Heroku",
+  "repository": "https://github.com/jyonker/url-shortener"
+}
