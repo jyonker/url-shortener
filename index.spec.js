@@ -9,6 +9,6 @@ describe('main server', function () {
   it('should respond on /', function (done) {
     request(server)
       .get('/')
-      .expect(200, "Testing...", done);
+      .expect(200, "Testing more...", done);
   });
 });
