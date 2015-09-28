@@ -1,4 +1,5 @@
 module.exports = function (app) {
+  var urlRegex = require('./../services/url-validation-regex.js').urlRegex;
   var Storage = require('./../services/storage.js').Storage;
   var storage = new Storage();
 
@@ -21,13 +22,35 @@ module.exports = function (app) {
     );
   });
 
+  function validateAndCleanUrl(shortUrlParam, shortUrlBody, longUrl, response) {
+    if (shortUrlBody && shortUrlParam !== shortUrlBody) {
+      response.status(400).send({error: {reason: 'Short URL name mismatch'}});
+      return false;
+    }
+
+    if (!urlRegex.test(longUrl)) {
+      longUrl = 'http://' + longUrl;
+      if (urlRegex.test(longUrl)) {
+        return longUrl;
+      } else {
+        response.status(400).send({error: {reason: 'Long URL is not valid URL'}});
+        return false;
+      }
+    }
+
+    return longUrl;
+  }
+
   app.put('/api/:apiVersion/url/:shortUrl', function (request, response) {
     var shortUrl = request.params.shortUrl;
     var longUrl = request.body.longUrl;
 
-    //TODO: throw error if body and params shortUrl don't match
-    //TODO: throw error if longURl doesn't pass regex validation
-    //TODO: add http if longURl doesn't have a protocol
+    var cleanedLongUrl = validateAndCleanUrl(shortUrl, request.body.shortUrl, longUrl, response);
+    if (cleanedLongUrl) {
+      longUrl = cleanedLongUrl;
+    } else {
+      return;
+    }
 
     storage.createUrl(shortUrl, longUrl).then(
       function urlCreateSuccess () {

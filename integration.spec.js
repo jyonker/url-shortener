@@ -70,27 +70,67 @@ describe('url-shortener server', function () {
 
     it('should not allow short urls to be updated', function (done) {
       //TODO: once error handling is implemented, stop using 5xx code
-      var mockUrlResource = {longUrl: mockLongUrl, shortUrl: 'someNewUrl'};
+      var mockUrlResource = {longUrl: mockLongUrl, shortUrl: mockShortUrl};
       request
         .put('/api/v1/url/' + mockShortUrl)
         .send(mockUrlResource)
         .expect(500, done);
     });
 
+    it('should allow short urls to be created without short url in body', function (done) {
+      var anotherMockShortUrl = 'yetAnotherOne';
+      var anotherMockLongUrl = 'http://maps.google.com/';
+
+      var mockUrlResource = {longUrl: anotherMockLongUrl, shortUrl: anotherMockShortUrl};
+      request
+        .put('/api/v1/url/' + anotherMockShortUrl)
+        .send({longUrl: anotherMockLongUrl})
+        .expect(201, mockUrlResource, done);
+    });
+
+    it('should not allow short urls to be created with body and url name mismatch', function (done) {
+      var anotherMockShortUrl = 'evenMoreFakeNames';
+      var anotherMockLongUrl = 'http://maps.google.com/';
+
+      var mockUrlResource = {longUrl: anotherMockLongUrl, shortUrl: 'whoops!'};
+      request
+        .put('/api/v1/url/' + anotherMockShortUrl)
+        .send(mockUrlResource)
+        .expect(400, done);
+    });
+
+    describe('with url validation', function () {
+      function testWithLongUrl(badMockUrl) {
+        it('should fail if long url "' + badMockUrl + '" fails url validation', function (done) {
+
+          var anotherMockShortUrl = 'anotherFakeName...';
+
+          var mockUrlResource = {longUrl: badMockUrl, shortUrl: anotherMockShortUrl};
+          request
+            .put('/api/v1/url/' + anotherMockShortUrl)
+            .send(mockUrlResource)
+            .expect(400, done);
+        });
+      }
+
+        testWithLongUrl('httpz://google.com/');
+        testWithLongUrl('http:/google.com/');
+        testWithLongUrl('websocket://google.com/');
+        testWithLongUrl('blah://something.com');
+        testWithLongUrl('http://.com/');
+
+        testWithLongUrl('http://localhost/');
+        testWithLongUrl('http://127.0.0.1/');
+    });
+
+    it('should append protocol to url if needed', function (done) {
+      var moreMockShortUrl = 'somethingCool';
+      request
+        .put('/api/v1/url/' + moreMockShortUrl)
+        .send({longUrl: 'google.com'})
+        .expect(201, {longUrl: 'http://google.com', shortUrl: moreMockShortUrl}, done);
+
+    });
   });
 });
-//API: at /api/v1/
-//PUT /url  {longurl: “string”, shorturl: “string”}
-//create a new short url with a long url
-//
-//returns 201 (created)  with the new key/value resource in json, 400 (invalid request) if the requested url is bad for some reason… maybe a url that fails regex validation or something, 403 if the key already exists and you don’t have permissions to change it, 500 (internal server error) if we can’t store it for some reason
-//allow changing an existing key if you are the user that created it (maybe tie in google oauth for fun in the future)
-//
-//GET /url
-//get long url by short url
-//
-//returns 200 if found, 404 if not found
-//
-//POST /url
-//create new randomized shortUrl from a longURl
 
