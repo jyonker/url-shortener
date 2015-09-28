@@ -1,6 +1,20 @@
 var redis = require('redis');
-var bluebird = require('bluebird');
-bluebird.promisifyAll(redis.RedisClient.prototype);
+var Promise = require('bluebird');
+Promise.promisifyAll(redis.RedisClient.prototype);
+
+function wrapWithSanePromiseHandling(promise) {
+  return promise.then(
+    function success(resource) {
+      if (!resource) {
+        return Promise.reject();
+      }
+
+      return Promise.resolve(resource);
+    },
+    function failure(error) {
+      return Promise.reject(error);
+    });
+}
 
 Storage = function() {
   this.redisClient = redis.createClient(process.env.REDIS_URL);
@@ -11,11 +25,13 @@ Storage = function() {
 };
 
 Storage.prototype.getUrl = function(key) {
-  return this.redisClient.getAsync(key);
+  return wrapWithSanePromiseHandling(
+    this.redisClient.getAsync(key));
 };
 
 Storage.prototype.createUrl = function(key, value) {
-  return this.redisClient.setnxAsync(key, value);
+  return wrapWithSanePromiseHandling(
+    this.redisClient.setnxAsync(key, value));
 };
 
 Storage.prototype.urlExists = function(key) {
