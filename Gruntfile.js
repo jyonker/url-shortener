@@ -7,15 +7,23 @@ module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     mochaTest: {
-      test: {
+      integration: {
         options: {
           reporter: 'spec'
         },
-        //TODO: move these files to an app dir and use 'app/**/*.js' or similar
-        src: ['index.js', 'index.spec.js']
+        src: ['app.js', 'routes/**/*(!spec).js', 'services/**/*(!spec).js', 'integration.spec.js']
+      },
+      unit: {
+        options: {
+          reporter: 'spec'
+        },
+        src: ['app.js', 'routes/**/*.js', 'services/**/*.js']
       }
     }
   });
 
-  grunt.registerTask('test', ['mochaTest']);
+  grunt.registerTask('integration', ['startRedis', 'mochaTest:integration', 'stopRedis']);
+  grunt.registerTask('unit', ['mochaTest:unit']);
+
+  grunt.registerTask('ci', ['unit', 'integration']);
 };
