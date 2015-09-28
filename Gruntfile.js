@@ -19,11 +19,18 @@ module.exports = function (grunt) {
         },
         src: ['app.js', 'routes/**/*.js', 'services/**/*.js']
       }
+    },
+    shell: {
+      herokuLocal: {
+        command: 'heroku local'
+      }
     }
   });
 
-  grunt.registerTask('integration', ['startRedis', 'mochaTest:integration', 'stopRedis']);
+  grunt.registerTask('integration', ['startRedis', 'force:mochaTest:integration', 'stopRedis']);
   grunt.registerTask('unit', ['mochaTest:unit']);
 
-  grunt.registerTask('ci', ['unit', 'integration']);
+  grunt.registerTask('serve', ['startRedis', 'shell:herokuLocal', 'stopRedis']);
+
+  grunt.registerTask('ci', ['mochaTest']);
 };

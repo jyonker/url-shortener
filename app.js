@@ -4,6 +4,8 @@ var app = express();
 module.exports = app;
 
 app.set('port', (process.env.PORT || 5000));
+
+//TODO: how do we get this to fail gracefully on bad json?
 app.use(bodyParser.json());
 
 require('./routes/index.js')(app);
