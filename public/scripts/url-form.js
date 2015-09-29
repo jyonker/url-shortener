@@ -25,7 +25,9 @@
   }
 
   $(document).ready(function () {
-    $("#shortenURLButton").on("click", function () {
+    $('.input-group-addon.page-location').append(location.href);
+
+    $('#shortenURLButton').on('click', function () {
       var longUrlValue = $('#longURLInput').val();
       var shortUrlValue = $('#shortURLInput').val();
       var httpVerb = !!shortUrlValue ? 'PUT' : 'POST';
@@ -43,7 +45,7 @@
         })
       })
         .done(function (response) {
-          var shortUrl = 'https://simple-url-shortener.herokuapp.com/' + response.shortUrl;
+          var shortUrl = location.href + response.shortUrl;
           var longUrl = response.longUrl;
           $('.created-url-container').append('<p>Success! Your new URL points from: ' + longUrl + ' to: <a href="' + shortUrl + '">' + shortUrl + '</a>');
         })
