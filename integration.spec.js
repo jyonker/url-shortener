@@ -60,6 +60,25 @@ describe('url-shortener server', function () {
         .expect(201, mockUrlResource, done);
     });
 
+    it('should allow short urls to be created with no name', function (done) {
+      var anotherMockLongUrl = 'http://maps.google.com/';
+
+      var mockUrlResource = {longUrl: anotherMockLongUrl};
+      request
+        .post('/api/v1/url/')
+        .send(mockUrlResource)
+        .expect(function(response) {
+          if (response.body.longUrl !== anotherMockLongUrl) {
+            return "Returned long url does not match input";
+          }
+
+          if (!response.body.shortUrl.length) {
+            return "No generated short url returned";
+          }
+        })
+        .expect(201, done);
+    });
+
     it('should allow long urls to be retrieved', function (done) {
       var mockUrlResource = {longUrl: mockLongUrl, shortUrl: mockShortUrl};
       request
@@ -140,7 +159,6 @@ describe('url-shortener server', function () {
         .put('/api/v1/url/' + moreMockShortUrl)
         .send({longUrl: 'google.com'})
         .expect(201, {longUrl: 'http://google.com', shortUrl: moreMockShortUrl}, done);
-
     });
   });
 });

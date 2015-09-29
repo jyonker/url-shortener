@@ -28,11 +28,12 @@
     $("#shortenURLButton").on("click", function () {
       var longUrlValue = $('#longURLInput').val();
       var shortUrlValue = $('#shortURLInput').val();
+      var httpVerb = !!shortUrlValue ? 'PUT' : 'POST';
 
       clearUserFeedback();
 
       $.ajax({
-        type: 'PUT',
+        type: httpVerb,
         url: '/api/v1/url/' + shortUrlValue,
         dataType: 'json',
         contentType: 'application/json',
