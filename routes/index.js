@@ -20,7 +20,7 @@ module.exports = function (app) {
   });
 
   function generateRandomShortUrl() {
-    //Ambiguous chars removed from pool: 1, 0, capital or lower I, L, S, and O)
+    //Ambiguous chars removed from pool: 1, 0, capital or lower I, L, S, and O
     return chance.string({length: 6, pool: 'abcdefghjkmnpqrtuvwxyzABCDEFGHJKMNPQRTUVWXYZ23456789'});
   }
 
