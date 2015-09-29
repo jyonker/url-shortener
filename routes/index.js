@@ -56,8 +56,16 @@ module.exports = function (app) {
         function urlCreateSuccess() {
           response.status(201).send({shortUrl: shortUrl, longUrl: longUrl});
         },
+        //TODO: flatten this promise chain
         function urlCreateFailure() {
-          response.status(500).send();
+          return storage.urlExists(shortUrl).then(
+            function urlExists () {
+              response.status(400).send({error: {reason: 'Short URL already taken', field: 'shortUrl'}});
+            },
+            function urlDoesNotExist () {
+              response.status(500).send();
+            }
+          );
         }
       );
     }

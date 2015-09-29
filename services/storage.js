@@ -35,7 +35,8 @@ Storage.prototype.createUrl = function(key, value) {
 };
 
 Storage.prototype.urlExists = function(key) {
-  return this.redisClient.existsAsync(key);
+  return wrapWithSanePromiseHandling(
+    this.redisClient.existsAsync(key));
 };
 
 exports.Storage = Storage;

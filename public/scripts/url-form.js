@@ -4,8 +4,12 @@
     longUrl: 'long-url'
   };
 
-  function addError(field) {
+  function addError(field, reason) {
     $('.form-group.' + field).addClass('has-error');
+
+    if (reason) {
+      $('.' + field + ' .error-help').html(reason);
+    }
   }
 
   function removeError(field) {
@@ -53,7 +57,8 @@
           var responseJSON = response.responseJSON;
           if (responseJSON && responseJSON.error && responseJSON.error.field) {
             var fieldInError = fieldToId[responseJSON.error.field];
-            addError(fieldInError);
+
+            addError(fieldInError, responseJSON.error.reason);
           } else {
             forEachFieldId(addError);
           }

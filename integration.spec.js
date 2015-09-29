@@ -88,12 +88,11 @@ describe('url-shortener server', function () {
     });
 
     it('should not allow short urls to be updated', function (done) {
-      //TODO: once error handling is implemented, stop using 5xx code
       var mockUrlResource = {longUrl: mockLongUrl, shortUrl: mockShortUrl};
       request
         .put('/api/v1/url/' + mockShortUrl)
         .send(mockUrlResource)
-        .expect(500, done);
+        .expect(400, {error: {reason: 'Short URL already taken', field: 'shortUrl'}}, done);
     });
 
     it('should allow short urls to be created without short url in body', function (done) {
