@@ -20,7 +20,8 @@ module.exports = function (app) {
   });
 
   function generateRandomShortUrl() {
-    return chance.string({length: 6, pool: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'});
+    //Ambiguous chars removed from pool: 1, 0, capital or lower I, L, S, and O)
+    return chance.string({length: 6, pool: 'abcdefghjkmnpqrtuvwxyzABCDEFGHJKMNPQRTUVWXYZ23456789'});
   }
 
   function validateAndCleanUrl(shortUrlParam, shortUrlBody, longUrl, response) {
