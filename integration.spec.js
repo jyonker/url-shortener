@@ -99,6 +99,17 @@ describe('url-shortener server', function () {
         .expect(400, done);
     });
 
+    it('should not allow short url to be called api', function (done) {
+      var anotherMockShortUrl = 'api';
+      var anotherMockLongUrl = 'http://maps.google.com/';
+
+      var mockUrlResource = {longUrl: anotherMockLongUrl, shortUrl: anotherMockShortUrl};
+      request
+        .put('/api/v1/url/' + anotherMockShortUrl)
+        .send(mockUrlResource)
+        .expect(400, done);
+    });
+
     describe('with url validation', function () {
       function testWithLongUrl(badMockUrl) {
         it('should fail if long url "' + badMockUrl + '" fails url validation', function (done) {

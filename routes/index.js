@@ -19,6 +19,11 @@ module.exports = function (app) {
   });
 
   function validateAndCleanUrl(shortUrlParam, shortUrlBody, longUrl, response) {
+    if (shortUrlParam === 'api') {
+      response.status(400).send({error: {reason: 'Short URL already taken', field: 'shortUrl'}});
+      return false;
+    }
+
     if (shortUrlBody && shortUrlParam !== shortUrlBody) {
       response.status(400).send({error: {reason: 'Short URL name mismatch', field: 'shortUrl'}});
       return false;
