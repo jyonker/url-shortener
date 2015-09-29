@@ -3,10 +3,6 @@ module.exports = function (app) {
   var Storage = require('./../services/storage.js').Storage;
   var storage = new Storage();
 
-  app.get('/', function (request, response) {
-    response.send('Testing more...');
-  });
-
   app.get('/:shortUrl', function (request, response) {
     var shortUrl = request.params.shortUrl;
 
@@ -24,7 +20,7 @@ module.exports = function (app) {
 
   function validateAndCleanUrl(shortUrlParam, shortUrlBody, longUrl, response) {
     if (shortUrlBody && shortUrlParam !== shortUrlBody) {
-      response.status(400).send({error: {reason: 'Short URL name mismatch'}});
+      response.status(400).send({error: {reason: 'Short URL name mismatch', field: 'shortUrl'}});
       return false;
     }
 
@@ -33,7 +29,7 @@ module.exports = function (app) {
       if (urlRegex.test(longUrl)) {
         return longUrl;
       } else {
-        response.status(400).send({error: {reason: 'Long URL is not valid URL'}});
+        response.status(400).send({error: {reason: 'Long URL is not valid URL', field: 'longUrl'}});
         return false;
       }
     }

@@ -1,0 +1,7 @@
+.error-help {
+    display: none;
+}
+
+.form-group.has-error .error-help {
+    display: inline;
+}

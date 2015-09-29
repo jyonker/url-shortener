@@ -31,7 +31,7 @@ module.exports = function (grunt) {
   grunt.registerTask('clearData', function() {
     var done = this.async();
 
-    //grunt-services doesn't wait for redis to start completely, so 100ms delay
+    //TODO: grunt-services doesn't wait for redis to start completely, so 100ms delay
     //good opportunity to PR grunt-services to add better wait logic
     setTimeout(function () {
       var redisClient = redis.createClient(process.env.REDIS_URL);

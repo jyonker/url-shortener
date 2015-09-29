@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Simple URL Shortener</title>
+
+    <!-- Third Party Dependencies -->
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha256-k2/8zcNbxVIh5mnQ52A0r3a6jAgMGxFJFE2707UxGCk= sha512-ZV9KawG2Legkwp3nAlxLIVFudTauWuBpC10uEafMHYL0Sarrz5A7G79kXh5+5+woxQ5HM559XX2UZjMJ36Wplg==" crossorigin="anonymous">
+
+
+    <!-- Application files -->
+    <script src="scripts/url-form.js"></script>
+    <link rel="stylesheet" href="styles/url-form.css">
+
+</head>
+
+<body>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Simple URL Shortener</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal">
+                <div class="form-group long-url">
+                    <label for="longURLInput" class="col-sm-2 control-label">Long URL</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="longURLInput" placeholder="Long URL">
+                        <span class="help-block error-help">This URL is invalid.</span>
+                    </div>
+                </div>
+                <div class="form-group short-url">
+                    <label for="shortURLInput" class="col-sm-2 control-label">Short URL (Optional)</label>
+                    <div class="col-sm-10">
+                        <div class="input-group">
+                            <div class="input-group-addon">https://simple-url-shortener.herokuapp.com/</div>
+                            <input type="text" class="form-control" id="shortURLInput" placeholder="Short URL">
+                        </div>
+                        <span class="help-block error-help">This URL is invalid.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" class="btn btn-default" id="shortenURLButton">Shorten URL</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="created-url-container"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

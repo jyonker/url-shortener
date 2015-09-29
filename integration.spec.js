@@ -28,7 +28,7 @@ describe('url-shortener server', function () {
   it('should respond on /', function (done) {
     request
       .get('/')
-      .expect(200, "Testing more...", done);
+      .expect(200, done);
   });
 
   describe('user endpoints', function () {
