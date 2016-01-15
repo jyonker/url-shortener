@@ -8,7 +8,9 @@
 
     * some edge cases produce 500
 
-* Disallow ambiguous chars in generated short urls
+* Mobile UI
+
+* Branding
 
 * Return uniform error objects and abstract error creation
 

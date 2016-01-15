@@ -17,7 +17,7 @@ function wrapWithSanePromiseHandling(promise) {
 }
 
 Storage = function() {
-  this.redisClient = redis.createClient(process.env.REDIS_URL);
+  this.redisClient = redis.createClient(process.env.REDISCLOUD_URL, {no_ready_check: true});
 
   this.redisClient.on("error", function (err) {
     console.log("Error " + err);
