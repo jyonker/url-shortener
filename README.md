@@ -10,8 +10,6 @@
 
 * Mobile UI
 
-* Branding
-
 * Return uniform error objects and abstract error creation
 
 * Pull out validation logic as service and use it on front end as well
