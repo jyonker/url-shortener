@@ -26,7 +26,20 @@ module.exports = function (grunt) {
         command: 'heroku local'
       },
       failBuildOnGitDiff: {
-        command: 'git diff-index --quiet HEAD --'
+        command: 'git status --porcelain',
+        options: {
+          stdout: false,
+          stderr: false,
+          stdin: false,
+          callback: function (err, stdout, stderr, cb) {
+            var changesDetected = !!stdout.length;
+            if (changesDetected) {
+              grunt.warn('Git changes detected. Did you forget to build and commit dist?');
+            } else {
+              cb();
+            }
+          }
+        }
       }
     },
     filerev: {
