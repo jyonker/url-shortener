@@ -1,31 +1,41 @@
-.error-help {
-  display: none;
+.url-form {
+  .error-help {
+    display: none;
 
-  .form-group.has-error & {
-    display: inline;
-  }
-}
-
-.page-header {
-  & > * {
-    font-size: 36px;
+    .form-group.has-error & {
+      display: inline;
+    }
   }
 
-  .link, .noodle {
-    color: #19736c
+  .control-label {
+    margin-bottom: 5px;
   }
 
-  .noodle-icon {
-    color: #4986ba;
-    margin-left: -4px;
-    margin-right: -4px;
+  .long-url .control-label {
+    font-size: 18px;
   }
-}
 
-.generated-link {
-  font-size: 19px;
-}
+  .page-header {
+    & > * {
+      font-size: 36px;
+    }
 
-.clipboard-button {
-  margin-top: 20px;
+    .link, .noodle {
+      color: #19736c
+    }
+
+    .noodle-icon {
+      color: #4986ba;
+      margin-left: -4px;
+      margin-right: -4px;
+    }
+  }
+
+  .generated-link {
+    font-size: 19px;
+  }
+
+  .clipboard-button {
+    margin-top: 20px;
+  }
 }
