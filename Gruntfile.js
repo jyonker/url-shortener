@@ -24,6 +24,9 @@ module.exports = function (grunt) {
     shell: {
       herokuLocal: {
         command: 'heroku local'
+      },
+      gitDiff: {
+        command: 'git diff-index --quiet HEAD --'
       }
     },
     filerev: {
