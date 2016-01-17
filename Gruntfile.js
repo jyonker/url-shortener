@@ -70,6 +70,17 @@ module.exports = function (grunt) {
     },
     clean: {
       dist: ['dist/**/*.*']
+    },
+    sass: {
+      dist: {
+        src: 'public/styles/*.scss',
+        dest: 'public/generated/compiled.css'
+      }
+    },
+    env : {
+      prod : {
+        PRODUCTION_MODE : 'true'
+      }
     }
   });
 
@@ -93,10 +104,17 @@ module.exports = function (grunt) {
   grunt.registerTask('integration', ['startRedis', 'clearData', 'force:mochaTest:integration', 'stopRedis']);
   grunt.registerTask('unit', ['mochaTest:unit']);
 
-  grunt.registerTask('serve', ['startRedis', 'shell:herokuLocal', 'stopRedis']);
-
   grunt.registerTask('ci', ['build', 'shell:failBuildOnGitDiff', 'clearData', 'mochaTest']);
 
-  grunt.registerTask('build', ['clean', 'copy:index', 'useminPrepare', 'concat', 'cssmin', 'uglify', 'filerev', 'usemin']);
+  grunt.registerTask('build', ['clean', 'copy:index', 'useminPrepare', 'sass', 'concat', 'cssmin', 'uglify', 'filerev', 'usemin']);
 
+  grunt.task.registerTask('serve', '', function(environment) {
+    var tasks = ['startRedis', 'shell:herokuLocal', 'stopRedis'];
+
+    if (environment === 'prod') {
+      tasks.unshift('env:prod');
+    }
+
+    grunt.task.run(tasks);
+  });
 };
