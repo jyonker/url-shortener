@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>link&infin;noodle</title>
+
+    <!-- Third Party Dependencies -->
+    <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+    <!-- Application files -->
+
+    <script src="scripts/scripts.597d19d9.js"></script>
+
+    <link rel="stylesheet" href="styles/styles.ccc691cd.css">
+
+</head>
+
+<body>
+
+<div class="container">
+    <div class="page-header">
+        <span class="link">link</span>
+        <span><i class="fa fa-link noodle-icon"></i></span>
+        <span class="noodle">noodle</span>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal">
+                <div class="form-group long-url">
+                    <label for="longURLInput" class="col-sm-2 control-label">Original Link</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="longURLInput" placeholder="Original Link">
+                        <span class="help-block error-help">This link is invalid.</span>
+                    </div>
+                </div>
+                <div class="form-group short-url">
+                    <label for="shortURLInput" class="col-sm-2 control-label">Custom Link (Optional)</label>
+                    <div class="col-sm-10">
+                        <div class="input-group">
+                            <div class="input-group-addon page-location"></div>
+                            <input type="text" class="form-control" id="shortURLInput" placeholder="Custom Link">
+                        </div>
+                        <span class="help-block error-help">This link is invalid.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" class="btn btn-default" id="shortenURLButton">Shorten Link</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="created-url-container"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
