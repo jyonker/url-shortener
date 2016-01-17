@@ -82,7 +82,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('serve', ['startRedis', 'shell:herokuLocal', 'stopRedis']);
 
-  grunt.registerTask('ci', ['build', 'failBuildOnGitDiff', 'clearData', 'mochaTest']);
+  grunt.registerTask('ci', ['build', 'shell:failBuildOnGitDiff', 'clearData', 'mochaTest']);
 
   grunt.registerTask('build', ['clean', 'copy:index', 'useminPrepare', 'concat', 'cssmin', 'uglify', 'filerev', 'usemin']);
 
