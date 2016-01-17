@@ -51,7 +51,7 @@
         .done(function (response) {
           var shortUrl = location.href + response.shortUrl;
           var longUrl = response.longUrl;
-          $('.created-url-container').append('<p>Success! Your new URL points from: ' + longUrl + ' to: <a href="' + shortUrl + '">' + shortUrl + '</a>');
+          $('.created-url-container').append('Success! Link created: </br> <a class="generated-link" href="' + shortUrl + '">' + shortUrl + '</a>');
         })
         .fail(function (response) {
           var responseJSON = response.responseJSON;
