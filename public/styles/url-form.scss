@@ -1,10 +1,15 @@
 .url-form {
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .error-help {
     display: none;
+  }
 
-    .form-group.has-error & {
-      display: inline;
-    }
+  .form-group.has-error .error-help {
+    display: inline;
   }
 
   .control-label {
