@@ -25,6 +25,35 @@ module.exports = function (grunt) {
       herokuLocal: {
         command: 'heroku local'
       }
+    },
+    filerev: {
+      js: {
+        src: 'dist/**/*.js'
+      },
+      css :{
+        src: 'dist/**/*.css'
+      }
+    },
+    copy: {
+      index: {
+        src: 'public/index.html',
+        dest: 'dist/index.html'
+      }
+    },
+    useminPrepare: {
+      html: 'public/index.html',
+      options: {
+        dest: 'dist'
+      }
+    },
+    usemin: {
+      html: 'dist/index.html',
+      options: {
+        assetsDirs: ['dist']
+      }
+    },
+    clean: {
+      dist: ['dist/**/*.*']
     }
   });
 
@@ -50,5 +79,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('serve', ['startRedis', 'shell:herokuLocal', 'stopRedis']);
 
-  grunt.registerTask('ci', ['clearData', 'mochaTest']);
+  grunt.registerTask('ci', ['build', 'clearData', 'mochaTest']);
+
+  grunt.registerTask('build', ['clean', 'copy:index', 'useminPrepare', 'concat', 'cssmin', 'uglify', 'filerev', 'usemin']);
+
 };
