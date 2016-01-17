@@ -18,10 +18,16 @@ app.use(compression());
 //TODO: how do we get this to fail gracefully on bad json?
 app.use(bodyParser.json());
 
-app.use(express.static(__dirname + '/public', {
-  //maxAge: '1y',
+var staticFilesConfiguration = {
+  maxAge: '1y',
   setHeaders: setCustomStaticFileHeaders
-}));
+};
+
+if (process.env.PRODUCTION_MODE === 'true') {
+  app.use(express.static(__dirname + '/dist', staticFilesConfiguration));
+}
+
+app.use(express.static(__dirname + '/public', staticFilesConfiguration));
 
 require('./routes/index.js')(app);
 
