@@ -3,7 +3,7 @@ var redis = require('redis');
 
 //using multiline comments so scss preserves them in the css
 var copyrightBanner =
-`/* Copyright 2016 Jonathan Yonker
+`/*! Copyright 2016 Jonathan Yonker
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -96,6 +96,11 @@ module.exports = function (grunt) {
     env : {
       prod : {
         PRODUCTION_MODE : 'true'
+      }
+    },
+    uglify: {
+      options: {
+        preserveComments: 'some'
       }
     },
     usebanner: {
