@@ -13,15 +13,4 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-*/
-
-//use https://github.com/howardabrams/node-mocks-http for unit tests
-var proxyquire =  require('proxyquire');
-var sinon = require('sinon');
-var expect = require('expect.js');
-
-//proxyquire('./index.js', { './storage.js': storageSpy });
-describe('routes', function () {
-  xit('should write some unit tests', function () {
-  });
-});
+*/.url-form .row{margin-left:0;margin-right:0}.url-form .error-help{display:none}.url-form .form-group.has-error .error-help{display:inline}.url-form .control-label{margin-bottom:5px}.url-form .long-url .control-label{font-size:18px}.url-form .page-header>*{font-size:36px}.url-form .page-header .link,.url-form .page-header .noodle{color:#19736c}.url-form .page-header .noodle-icon{color:#4986ba;margin-left:-4px;margin-right:-4px}.url-form .generated-link{font-size:19px}.url-form .clipboard-button{margin-top:20px}

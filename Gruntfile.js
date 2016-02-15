@@ -3,7 +3,7 @@ var redis = require('redis');
 
 //using multiline comments so scss preserves them in the css
 var copyrightBanner =
-`/*
+`/*!
 @license
 Copyright 2016 Jonathan Yonker
 
