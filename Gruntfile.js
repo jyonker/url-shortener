@@ -98,7 +98,10 @@ module.exports = function (grunt) {
     },
     env : {
       prod : {
-        PRODUCTION_MODE : 'true'
+        PRODUCTION_MODE: 'true'
+      },
+      newRelicOff : {
+        NEW_RELIC_ENABLED: 'false'
       }
     },
     uglify: {
@@ -144,7 +147,7 @@ module.exports = function (grunt) {
   });
 
   //TODO: set a different server port for integration testing to allow testing while serving
-  grunt.registerTask('integration', ['startRedis', 'clearData', 'force:mochaTest:integration', 'stopRedis']);
+  grunt.registerTask('integration', ['env:newRelicOff', 'startRedis', 'clearData', 'force:mochaTest:integration', 'stopRedis']);
   grunt.registerTask('unit', ['mochaTest:unit']);
 
   grunt.registerTask('ci', ['build', 'shell:failBuildOnGitDiff', 'clearData', 'mochaTest']);
@@ -152,7 +155,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', ['clean', 'usebanner', 'copy:index', 'useminPrepare', 'sass', 'concat', 'cssmin', 'uglify', 'filerev', 'usemin']);
 
   grunt.task.registerTask('serve', '', function(environment) {
-    var tasks = ['startRedis', 'shell:herokuLocal', 'stopRedis'];
+    var tasks = ['env:newRelicOff', 'startRedis', 'shell:herokuLocal', 'stopRedis'];
 
     if (environment === 'prod') {
       tasks.unshift('env:prod');
