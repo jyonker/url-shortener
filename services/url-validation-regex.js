@@ -1,4 +1,4 @@
-//
+// @license
 // Regular Expression for URL validation
 //
 // Author: Diego Perini
