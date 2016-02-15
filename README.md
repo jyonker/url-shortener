@@ -8,7 +8,7 @@
 
     * some edge cases produce 500
 
-* Mobile UI
+* Improve Mobile UI
 
 * Return uniform error objects and abstract error creation
 
@@ -20,17 +20,9 @@
 
 * Bootstrap Theme
 
-* Monitoring
-
 * Frontend testing (karma and mocha/chai or jasmine)
 
-* Cache-Control headers
-
-    * different shorteners seem to have different opinions on this one...
-
 * Security
-
-    * DDOS protection (cloudflare?)
 
     * user input sanitization
 
@@ -78,9 +70,17 @@ Codeship: run backend tests (and eventually frontend tests), then deploy automag
 
 github
 
-**CDN/SSL**:
+**CDN/SSL/DDoS Protection**:
 
-Cloudflare for free SSL and to CDN the frontend (and maybe shortened urls?)
+Cloudflare for free SSL, CDN for the frontend (maybe shortened urls too?), and basic DDoS protection
+
+**Monitoring**:
+
+New Relic
+
+**Caching**:
+
+Using Google PageSpeed approach via grunt-filerev
 
 **User-Facing API:**
 
