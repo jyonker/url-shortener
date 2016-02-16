@@ -76,7 +76,7 @@ Cloudflare for free SSL, CDN for the frontend (maybe shortened urls too?), and b
 
 **Monitoring**:
 
-New Relic
+New Relic with Deployment MonitoringPushing
 
 **Caching**:
 
