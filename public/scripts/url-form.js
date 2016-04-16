@@ -46,20 +46,14 @@ limitations under the License.
     $('.clipboard-button').hide();
   }
 
-  $(document).ready(function () {
-    var clipboard = new Clipboard('.clipboard-button');
+  function shortenURL() {
+    var longUrlValue = $('#longURLInput').val();
+    var shortUrlValue = $('#shortURLInput').val();
+    var httpVerb = !!shortUrlValue ? 'PUT' : 'POST';
+
     clearUserFeedback();
 
-    $('.input-group-addon.page-location').append(location.href);
-
-    $('#shortenURLButton').on('click', function () {
-      var longUrlValue = $('#longURLInput').val();
-      var shortUrlValue = $('#shortURLInput').val();
-      var httpVerb = !!shortUrlValue ? 'PUT' : 'POST';
-
-      clearUserFeedback();
-
-      $.ajax({
+    $.ajax({
         type: httpVerb,
         url: '/api/v1/url/' + shortUrlValue,
         dataType: 'json',
@@ -69,23 +63,37 @@ limitations under the License.
           shortUrl: shortUrlValue
         })
       })
-        .done(function (response) {
-          var shortUrl = location.href + response.shortUrl;
-          var longUrl = response.longUrl;
-          $('.created-url-container').append('Success! Link created: </br> <a class="generated-link" href="' + shortUrl + '">' + shortUrl + '</a>');
-          $('.clipboard-button').show();
-        })
-        .fail(function (response) {
-          var responseJSON = response.responseJSON;
-          if (responseJSON && responseJSON.error && responseJSON.error.field) {
-            var fieldInError = fieldToId[responseJSON.error.field];
+      .done(function (response) {
+        var shortUrl = location.href + response.shortUrl;
+        var longUrl = response.longUrl;
+        $('.created-url-container').append('Success! Link created: </br> <a class="generated-link" href="' + shortUrl + '">' + shortUrl + '</a>');
+        $('.clipboard-button').show();
+      })
+      .fail(function (response) {
+        var responseJSON = response.responseJSON;
+        if (responseJSON && responseJSON.error && responseJSON.error.field) {
+          var fieldInError = fieldToId[responseJSON.error.field];
 
-            addError(fieldInError, responseJSON.error.reason);
-          } else {
-            forEachFieldId(addError);
-          }
-        });
+          addError(fieldInError, responseJSON.error.reason);
+        } else {
+          forEachFieldId(addError);
+        }
+      });
+  }
+
+  $(document).ready(function () {
+    var clipboard = new Clipboard('.clipboard-button');
+    clearUserFeedback();
+
+    $('.input-group-addon.page-location').append(location.href);
+
+    $('#shortenURLButton').on('click', shortenURL);
+
+    $('#shortenURLForm').keypress(function (e) {
+      if (e.which == 13) {
+        shortenURL();
+        return false;
+      }
     });
-
   });
 })();
