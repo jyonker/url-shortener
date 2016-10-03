@@ -45,7 +45,7 @@ module.exports = function (grunt) {
         command: 'heroku local'
       },
       failBuildOnGitDiff: {
-        command: 'git status --porcelain',
+        command: 'git status --porcelain | grep -v newrelic_agent.log',
         options: {
           stdout: false,
           stderr: false,
