@@ -50,15 +50,15 @@ app.use(express.static(__dirname + '/public', staticFilesConfiguration));
 
 require('./routes/index.js')(app);
 
-app.use(function(request, response, next) {
+app.use((request, response, next) => {
   response.status(404).send('Sorry, we couldn\'t find that link! (404)');
 });
 
-app.use(function(error, request, response, next) {
+app.use((error, request, response, next) => {
   response.status(500).send('Sorry, we ran into an error looking for that link! (500)');
 });
 
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), () => {
   console.log('Node app is running on port', app.get('port'));
 });
 

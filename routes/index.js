@@ -15,14 +15,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-module.exports = function (app) {
+module.exports = (app) => {
   var urlRegex = require('./../services/url-validation-regex.js').urlRegex;
   var Storage = require('./../services/storage.js').Storage;
   var chance = require('chance').Chance();
   var rateLimit = require('./../services/rate-limiting-middleware.js').rateLimit;
   var storage = new Storage();
 
-  app.get('/:shortUrl', rateLimit.prevent, function (request, response) {
+  app.get('/:shortUrl', rateLimit.prevent, (request, response) => {
     var shortUrl = request.params.shortUrl;
 
     storage.getUrl(shortUrl).then(
@@ -90,21 +90,21 @@ module.exports = function (app) {
     }
   }
 
-  app.put('/api/:apiVersion/url/:shortUrl', rateLimit.prevent, function (request, response) {
+  app.put('/api/:apiVersion/url/:shortUrl', rateLimit.prevent, (request, response) => {
     var shortUrl = request.params.shortUrl;
     var longUrl = request.body.longUrl;
 
     createUrl(shortUrl, request.body.shortUrl, longUrl, response);
   });
 
-  app.post('/api/:apiVersion/url/', rateLimit.prevent, function (request, response) {
-    var longUrl = request.body.longUrl;
+  app.post('/api/:apiVersion/url/', rateLimit.prevent, (request, response) => {
     var shortUrl = generateRandomShortUrl();
+    var longUrl = request.body.longUrl;
 
     createUrl(shortUrl, request.body.shortUrl, longUrl, response);
   });
 
-  app.get('/api/:apiVersion/url/:shortUrl', rateLimit.prevent, function (request, response) {
+  app.get('/api/:apiVersion/url/:shortUrl', rateLimit.prevent, (request, response) => {
     var shortUrl = request.params.shortUrl;
 
     storage.getUrl(shortUrl).then(
