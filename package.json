@@ -8,7 +8,7 @@
     "test": "grunt ci"
   },
   "dependencies": {
-    "bluebird": "^2.10.1",
+    "bluebird": "^3.4.6",
     "body-parser": "^1.14.0",
     "chance": "^0.7.7",
     "compression": "^1.6.0",
