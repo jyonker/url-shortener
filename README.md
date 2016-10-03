@@ -50,13 +50,13 @@ Node.js with Express (considered loopback for more opinionated option)
 
 Store short url/long url as key/value. key/value pairs in redis.
 
-In the future use redis persistence or postgres (with hstore for key/value pairs) for to back redis.
+In the future use redis persistence or postgres (with hstore for key/value pairs) to back redis.
 
 Possibly just cache top hits and recently created URLs (rather than all urls)
 
 **Frontend**:
 
-Simple jquery/bootstrap frontend served by express. Allow users to pick their own short url or generate one for them. In the future, add user authentication and possibly use Angular.
+Simple jquery/bootstrap frontend served by express. Allow users to pick their own short url or generate one for them. In the future, add user authentication and possibly use React.
 
 **Automatic short url generation**:  
 
@@ -76,7 +76,7 @@ Cloudflare for free SSL, CDN for the frontend (maybe shortened urls too?), and b
 
 **Monitoring**:
 
-New Relic with Deployment MonitoringPushing
+New Relic with Deployment Monitoring
 
 **Caching**:
 
@@ -102,9 +102,9 @@ Using Google PageSpeed approach via grunt-filerev
 
         201 with the new key/value resource in json
 
-        400 if the requested url is fails validation
+        400 if the requested url fails validation
 
-        403 if the key already exists and you don’t have permissions to change it (not   implemented yet)
+        403 if the key already exists and you don’t have permissions to change it (not implemented yet)
 
         500 if we fail to store it
 
