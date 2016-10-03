@@ -51,7 +51,7 @@ app.use(express.static(__dirname + '/public', staticFilesConfiguration));
 require('./routes/index.js')(app);
 
 app.use((request, response, next) => {
-  response.status(404).send('Sorry, we couldn\'t find that link! (404)');
+  response.status(404).send(`Sorry, we couldn't find that link! (404)`);
 });
 
 app.use((error, request, response, next) => {

@@ -25,16 +25,13 @@ module.exports = (app) => {
   app.get('/:shortUrl', rateLimit.prevent, (request, response) => {
     var shortUrl = request.params.shortUrl;
 
-    storage.getUrl(shortUrl).then(
-      function urlGetSuccess (longUrl) {
+    storage.getUrl(shortUrl)
+      .then((longUrl) =>{
         response.status(301)
           .location(longUrl)
-          .send('<html><body><a href="' + longUrl + '">Page has moved here</a></body></html>');
-      },
-      function urlGetFailure () {
-        response.status(404).send();
-      }
-    );
+          .send(`<html><body><a href="${longUrl}">Page has moved here</a></body></html>`);
+      })
+      .catch(() => response.status(404).send());
   });
 
   function generateRandomShortUrl() {
@@ -43,7 +40,9 @@ module.exports = (app) => {
   }
 
   function validateAndCleanUrl(shortUrlParam, shortUrlBody, longUrl, response) {
+    //TODO: replace this with a blacklist
     if (shortUrlParam === 'api') {
+      //TODO: remove this duplication
       response.status(400).send({error: {reason: 'Short URL already taken', field: 'shortUrl'}});
       return false;
     }
@@ -68,26 +67,19 @@ module.exports = (app) => {
 
   function createUrl(shortUrl, bodyShortUrl, longUrl, response) {
     var cleanedLongUrl = validateAndCleanUrl(shortUrl, bodyShortUrl, longUrl, response);
-    if (cleanedLongUrl) {
-      longUrl = cleanedLongUrl;
-
-      storage.createUrl(shortUrl, longUrl).then(
-        function urlCreateSuccess() {
-          response.status(201).send({shortUrl: shortUrl, longUrl: longUrl});
-        },
-        //TODO: flatten this promise chain
-        function urlCreateFailure() {
-          return storage.urlExists(shortUrl).then(
-            function urlExists () {
-              response.status(400).send({error: {reason: 'Short URL already taken', field: 'shortUrl'}});
-            },
-            function urlDoesNotExist () {
-              response.status(500).send();
-            }
-          );
-        }
-      );
+    if (!cleanedLongUrl) {
+      return;
     }
+
+    //TODO: flatten this promise chain
+    storage.createUrl(shortUrl, cleanedLongUrl)
+      .then(() => response.status(201).send({shortUrl: shortUrl, longUrl: cleanedLongUrl}))
+      .catch(() => {
+        storage.urlExists(shortUrl)
+          .then(() => response.status(400).send({error: {reason: 'Short URL already taken', field: 'shortUrl'}}))
+          .catch(() => response.status(500).send());
+      }
+    );
   }
 
   app.put('/api/:apiVersion/url/:shortUrl', rateLimit.prevent, (request, response) => {
@@ -107,13 +99,8 @@ module.exports = (app) => {
   app.get('/api/:apiVersion/url/:shortUrl', rateLimit.prevent, (request, response) => {
     var shortUrl = request.params.shortUrl;
 
-    storage.getUrl(shortUrl).then(
-      function urlGetSuccess (longUrl) {
-        response.status(200).send({shortUrl: shortUrl, longUrl: longUrl});
-      },
-      function urlGetFailure () {
-        response.status(404).send();
-      }
-    );
+    storage.getUrl(shortUrl)
+      .then((longUrl) => response.status(200).send({shortUrl: shortUrl, longUrl: longUrl}))
+      .catch(() => response.status(404).send());
   });
 };
