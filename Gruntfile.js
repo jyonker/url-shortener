@@ -103,6 +103,9 @@ module.exports = function (grunt) {
       local : {
         NEW_RELIC_ENABLED: 'false',
         REDISCLOUD_URL: 'redis://localhost:6379'
+      },
+      ci: {
+        NEW_RELIC_ENABLED: 'false'
       }
     },
     uglify: {
@@ -151,7 +154,7 @@ module.exports = function (grunt) {
   grunt.registerTask('integration', ['env:local', 'startRedis', 'clearData', 'force:mochaTest:integration', 'stopRedis']);
   grunt.registerTask('unit', ['mochaTest:unit']);
 
-  grunt.registerTask('ci', ['build', 'shell:failBuildOnGitDiff', 'clearData', 'mochaTest']);
+  grunt.registerTask('ci', ['env:ci', 'build', 'shell:failBuildOnGitDiff', 'clearData', 'mochaTest']);
 
   grunt.registerTask('build', ['clean', 'usebanner', 'copy:index', 'useminPrepare', 'sass', 'concat', 'cssmin', 'uglify', 'filerev', 'usemin']);
 
