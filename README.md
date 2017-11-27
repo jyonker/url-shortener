@@ -7,10 +7,14 @@ In 2 shells:
 
 `npm run start:services`
 
-`npm start`
+`npm start:local`
 
 
 **Work Items:**
+
+* re-enable newrelic and put the env vars in google db
+
+* fix tests and CI 
 
 * async/await
 
