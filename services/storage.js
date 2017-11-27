@@ -15,45 +15,60 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-var redis = require('redis');
-var Promise = require('bluebird');
-Promise.promisifyAll(redis.RedisClient.prototype);
-
-function wrapWithSanePromiseHandling(promise) {
-  return promise.then(
-    function success(resource) {
-      if (!resource) {
-        return Promise.reject();
-      }
-
-      return Promise.resolve(resource);
-    },
-    function failure(error) {
-      return Promise.reject(error);
-    });
-}
+const Datastore = require('@google-cloud/datastore');
+const projectId = 'linknoodle-187323';
+const URL_KIND = 'URL';
+const SETTINGS_KIND = 'Settings';
 
 Storage = function() {
-  this.redisClient = redis.createClient(process.env.REDISCLOUD_URL, {no_ready_check: true});
+  if (process.env.NODE_ENV === 'production') {
+    this.datastore = Datastore();
+  } else {
+    this.datastore = Datastore({
+      projectId
+    });
+  }
+};
 
-  this.redisClient.on("error", function (err) {
-    console.log("Error " + err);
+Storage.prototype.getRedisCredentials = function() {
+  const key = this.datastore.key([SETTINGS_KIND, 'Redis']);
+
+  return this.datastore.get(key).then((data) => {
+    return {
+      url: data[0].redis_url,
+      password: data[0].redis_password
+    };
   });
 };
 
 Storage.prototype.getUrl = function(key) {
-  return wrapWithSanePromiseHandling(
-    this.redisClient.getAsync(key));
+  const dbKey = this.datastore.key([URL_KIND, key]);
+
+  return this.datastore.get(dbKey).then((data) => data[0].long);
 };
 
 Storage.prototype.createUrl = function(key, value) {
-  return wrapWithSanePromiseHandling(
-    this.redisClient.setnxAsync(key, value));
+  const dbKey = this.datastore.key([URL_KIND, key]);
+
+  const urlRecord = {
+    key: dbKey,
+    data: {
+      short: key,
+      long: value
+    }
+  };
+
+  return this.datastore.save(urlRecord);
 };
 
 Storage.prototype.urlExists = function(key) {
-  return wrapWithSanePromiseHandling(
-    this.redisClient.existsAsync(key));
+  const dbKey = this.datastore.key([URL_KIND, key]);
+
+  return this.datastore.get(dbKey).then((data) => {
+    if (!data[0]) {
+      return Promise.reject();
+    }
+  });
 };
 
 exports.Storage = Storage;

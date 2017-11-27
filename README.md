@@ -2,7 +2,21 @@
 
 [ ![Codeship Status for jyonker/url-shortener](https://codeship.com/projects/9737aed0-478c-0133-a898-6e659308a88a/status?branch=master)](https://codeship.com/projects/105049)
 
+### To Run
+In 2 shells:
+
+`npm run start:services`
+
+`npm start`
+
+
 **Work Items:**
+
+* async/await
+
+* Filter out special characters
+    \u0ca0_\u0ca0
+    3XbpadZvtW8ysEZl7R/OkYHtRWZPHBoXibGSunutt6M=
 
 * Add more testing to drive better error handling
 

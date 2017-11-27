@@ -17,11 +17,11 @@ limitations under the License.
 
 require('newrelic');
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var compression = require('compression');
-var mime = require('mime');
-var app = express();
+const express = require('express');
+const bodyParser = require('body-parser');
+const compression = require('compression');
+const mime = require('mime');
+const app = express();
 module.exports = app;
 
 function setCustomStaticFileHeaders(res, path) {
@@ -42,23 +42,22 @@ var staticFilesConfiguration = {
   setHeaders: setCustomStaticFileHeaders
 };
 
-if (process.env.PRODUCTION_MODE === 'true') {
+if (process.env.NODE_ENV === 'production') {
   app.use(express.static(__dirname + '/dist', staticFilesConfiguration));
 }
 
 app.use(express.static(__dirname + '/public', staticFilesConfiguration));
 
-require('./routes/index.js')(app);
+require('./routes/index.js')(app).then(() => {
+  app.use((request, response, next) => {
+    response.status(404).send(`Sorry, we couldn't find that link! (404)`);
+  });
 
-app.use((request, response, next) => {
-  response.status(404).send(`Sorry, we couldn't find that link! (404)`);
+  app.use((error, request, response, next) => {
+    response.status(500).send('Sorry, we ran into an error looking for that link! (500)');
+  });
+
+  app.listen(app.get('port'), () => {
+    console.log('Node app is running on port', app.get('port'));
+  });
 });
-
-app.use((error, request, response, next) => {
-  response.status(500).send('Sorry, we ran into an error looking for that link! (500)');
-});
-
-app.listen(app.get('port'), () => {
-  console.log('Node app is running on port', app.get('port'));
-});
-

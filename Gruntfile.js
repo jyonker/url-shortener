@@ -41,9 +41,6 @@ module.exports = function (grunt) {
       }
     },
     shell: {
-      herokuLocal: {
-        command: 'heroku local'
-      },
       failBuildOnGitDiff: {
         command: 'git status --porcelain',
         options: {
@@ -96,15 +93,6 @@ module.exports = function (grunt) {
         dest: 'public/generated/compiled.css'
       }
     },
-    env : {
-      prod : {
-        PRODUCTION_MODE: 'true'
-      },
-      local : {
-        NEW_RELIC_ENABLED: 'false',
-        REDISCLOUD_URL: 'redis://localhost:6379'
-      }
-    },
     uglify: {
       options: {
         preserveComments: 'some'
@@ -148,20 +136,10 @@ module.exports = function (grunt) {
   });
 
   //TODO: set a different server port for integration testing to allow testing while serving
-  grunt.registerTask('integration', ['env:local', 'startRedis', 'clearData', 'force:mochaTest:integration', 'stopRedis']);
-  grunt.registerTask('unit', ['mochaTest:unit']);
+  // grunt.registerTask('integration', ['startRedis', 'clearData', 'force:mochaTest:integration', 'stopRedis']);
+  // grunt.registerTask('unit', ['mochaTest:unit']);
 
-  grunt.registerTask('ci', ['env:local', 'build', 'shell:failBuildOnGitDiff', 'clearData', 'mochaTest']);
+  grunt.registerTask('ci', ['build', 'shell:failBuildOnGitDiff', 'clearData', 'mochaTest']);
 
   grunt.registerTask('build', ['clean', 'usebanner', 'copy:index', 'useminPrepare', 'sass', 'concat', 'cssmin', 'uglify', 'filerev', 'usemin']);
-
-  grunt.task.registerTask('serve', '', function(environment) {
-    var tasks = ['env:local', 'startRedis', 'shell:herokuLocal', 'stopRedis'];
-
-    if (environment === 'prod') {
-      tasks.unshift('env:prod');
-    }
-
-    grunt.task.run(tasks);
-  });
 };

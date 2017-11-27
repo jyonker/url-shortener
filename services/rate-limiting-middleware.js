@@ -19,17 +19,34 @@ var ExpressBrute = require('express-brute');
 var RedisStore = require('express-brute-redis');
 var redis = require('redis');
 
-var redisClient = redis.createClient(process.env.REDISCLOUD_URL, {no_ready_check: true});
 
-var expressBruteStore = new RedisStore({
-  client: redisClient
-});
+function getCredentials() {
+  if (process.env.NODE_ENV === 'production') {
+    const Storage = require('./storage.js').Storage;
+    const storage = new Storage();
 
-var rateLimit = new ExpressBrute(expressBruteStore, {
-  freeRetries: 80,
-  minWait: 10,
-  lifetime: 60 * 60,
-  proxyDepth: 1
-});
+    return storage.getRedisCredentials();
+  }
 
-exports.rateLimit = rateLimit;
+  return Promise.resolve({});
+}
+
+function getRateLimit() {
+  return getCredentials().then((credentials) => {
+    const redisClient = redis.createClient(credentials.url || 'redis://localhost:6379', {no_ready_check: true});
+    const expressBruteStore = new RedisStore({
+      client: redisClient,
+      auth_pass: credentials.password || undefined
+    });
+
+    return new ExpressBrute(expressBruteStore, {
+      freeRetries: 80,
+      minWait: 10,
+      lifetime: 60 * 60,
+      proxyDepth: 1
+    });
+  });
+}
+
+
+exports.getRateLimit = getRateLimit;

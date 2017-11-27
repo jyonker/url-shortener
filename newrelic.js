@@ -105,7 +105,7 @@ exports.config = {
    *
    * @env NEW_RELIC_ENABLED
    */
-  agent_enabled: true,
+  agent_enabled : process.env.NODE_ENV === 'production',
   /**
    * The default Apdex tolerating / threshold value for applications, in
    * seconds. The default for Node is apdexT to 100 milliseconds, which is
