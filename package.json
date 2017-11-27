@@ -4,8 +4,9 @@
   "description": "A simple URL Shortener running on Heroku",
   "main": "app.js",
   "scripts": {
-    "start": "grunt clearData && $(gcloud beta emulators datastore env-init) && node app.js",
+    "start": "$(gcloud beta emulators datastore env-init) && node app.js",
     "start:services": "gcloud beta emulators datastore start | redis-server",
+    "clear": "grunt clearData",
     "test": "grunt ci",
     "test:integration": "$(gcloud beta emulators datastore env-init) && grunt clearData && grunt mochaTest:integration",
     "deploy": "gcloud app deploy"
