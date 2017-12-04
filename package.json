@@ -7,7 +7,7 @@
     "start": "node app.js",
     "start:local": "$(gcloud beta emulators datastore env-init) && node app.js",
     "start:services": "gcloud beta emulators datastore start --no-store-on-disk",
-    "test": "npm run start:services && $(gcloud beta emulators datastore env-init) && grunt ci",
+    "test": "$(gcloud beta emulators datastore env-init) && grunt ci",
     "test:integration": "$(gcloud beta emulators datastore env-init) && grunt mochaTest:integration",
     "deploy": "gcloud app deploy",
     "build": "grunt build"
