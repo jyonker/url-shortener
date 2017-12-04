@@ -15,8 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-require('newrelic');
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const compression = require('compression');
@@ -48,16 +46,16 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(express.static(__dirname + '/public', staticFilesConfiguration));
 
-require('./routes/index.js')(app).then(() => {
-  app.use((request, response, next) => {
-    response.status(404).send(`Sorry, we couldn't find that link! (404)`);
-  });
+require('./routes/index.js')(app);
 
-  app.use((error, request, response, next) => {
-    response.status(500).send('Sorry, we ran into an error looking for that link! (500)');
-  });
+app.use((request, response, next) => {
+  response.status(404).send(`Sorry, we couldn't find that link! (404)`);
+});
 
-  app.listen(app.get('port'), () => {
-    console.log('Node app is running on port', app.get('port'));
-  });
+app.use((error, request, response, next) => {
+  response.status(500).send('Sorry, we ran into an error looking for that link! (500)');
+});
+
+app.listen(app.get('port'), () => {
+  console.log('Node app is running on port', app.get('port'));
 });

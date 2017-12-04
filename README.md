@@ -12,10 +12,6 @@ In 2 shells:
 
 **Work Items:**
 
-* re-enable newrelic and put the env vars in google db
-
-* fix tests and CI 
-
 * async/await
 
 * Filter out special characters

@@ -3,4 +3,3 @@ node_modules/
 .env
 .tmp/
 public/generated/
-newrelic_agent.log

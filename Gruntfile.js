@@ -1,5 +1,4 @@
 'use strict';
-var redis = require('redis');
 
 //using multiline comments so scss preserves them in the css
 var copyrightBanner =
@@ -119,27 +118,7 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('clearData', function() {
-    var done = this.async();
-
-    //TODO: grunt-services doesn't wait for redis to start completely, so 100ms delay
-    //good opportunity to PR grunt-services to add better wait logic
-    setTimeout(function () {
-      var redisClient = redis.createClient(process.env.REDIS_URL);
-
-      redisClient.on("ready", function () {
-        redisClient.flushall(function () {
-          done();
-        });
-      });
-    }, 100);
-  });
-
-  //TODO: set a different server port for integration testing to allow testing while serving
-  // grunt.registerTask('integration', ['startRedis', 'clearData', 'force:mochaTest:integration', 'stopRedis']);
-  // grunt.registerTask('unit', ['mochaTest:unit']);
-
-  grunt.registerTask('ci', ['build', 'shell:failBuildOnGitDiff', 'clearData', 'mochaTest']);
+  grunt.registerTask('ci', ['build', 'shell:failBuildOnGitDiff', 'mochaTest']);
 
   grunt.registerTask('build', ['clean', 'usebanner', 'copy:index', 'useminPrepare', 'sass', 'concat', 'cssmin', 'uglify', 'filerev', 'usemin']);
 };

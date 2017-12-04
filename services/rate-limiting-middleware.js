@@ -15,38 +15,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-var ExpressBrute = require('express-brute');
-var RedisStore = require('express-brute-redis');
-var redis = require('redis');
+const ExpressBrute = require('express-brute');
+const ExpressBruteNedbStore = require('express-brute-nedb');
 
+const store = new ExpressBruteNedbStore({
+  filename: '',
+  compactInterval: 60 * 60 * 1000
+});
 
-function getCredentials() {
-  if (process.env.NODE_ENV === 'production') {
-    const Storage = require('./storage.js').Storage;
-    const storage = new Storage();
+const rateLimit = new ExpressBrute(store, {
+  freeRetries: 80,
+  minWait: 10,
+  lifetime: 60 * 60,
+  proxyDepth: 1
+});
 
-    return storage.getRedisCredentials();
-  }
-
-  return Promise.resolve({});
-}
-
-function getRateLimit() {
-  return getCredentials().then((credentials) => {
-    const redisClient = redis.createClient(credentials.url || 'redis://localhost:6379', {no_ready_check: true});
-    const expressBruteStore = new RedisStore({
-      client: redisClient,
-      auth_pass: credentials.password || undefined
-    });
-
-    return new ExpressBrute(expressBruteStore, {
-      freeRetries: 80,
-      minWait: 10,
-      lifetime: 60 * 60,
-      proxyDepth: 1
-    });
-  });
-}
-
-
-exports.getRateLimit = getRateLimit;
+exports.rateLimit = rateLimit;

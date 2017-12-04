@@ -18,7 +18,6 @@ limitations under the License.
 const Datastore = require('@google-cloud/datastore');
 const projectId = 'linknoodle-187323';
 const URL_KIND = 'URL';
-const SETTINGS_KIND = 'Settings';
 
 Storage = function() {
   if (process.env.NODE_ENV === 'production') {
@@ -28,17 +27,6 @@ Storage = function() {
       projectId
     });
   }
-};
-
-Storage.prototype.getRedisCredentials = function() {
-  const key = this.datastore.key([SETTINGS_KIND, 'Redis']);
-
-  return this.datastore.get(key).then((data) => {
-    return {
-      url: data[0].redis_url,
-      password: data[0].redis_password
-    };
-  });
 };
 
 Storage.prototype.getUrl = function(key) {
