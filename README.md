@@ -9,6 +9,18 @@ In 2 shells:
 
 `npm start:local`
 
+### gcloud commands
+`gcloud app deploy`
+
+`gcloud app browse`
+
+`$(gcloud beta emulators datastore env-init)`
+
+`gcloud beta emulators datastore start`
+
+`gcloud auth`
+
+`gcloud app logs read`
 
 **Work Items:**
 
